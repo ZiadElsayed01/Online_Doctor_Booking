@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // const TOKEN = import.meta.env.VITE_TOKEN_DOCTOR;
-const TOKEN = localStorage.getItem("token") ?? "";
+// const TOKEN = localStorage.getItem("token") ?? "";
 
 // GET USER APPOINTMENTS
 export const getUserAppointments = async (filterBy: null | string) => {
@@ -12,7 +12,7 @@ export const getUserAppointments = async (filterBy: null | string) => {
             }`,
             {
                 headers: {
-                    Authorization: `Bearer ${TOKEN}`,
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
                     "Content-Type": "application/json",
                 },
             }

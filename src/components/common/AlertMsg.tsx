@@ -3,13 +3,14 @@ import { Alert, AlertTitle } from "../ui/alert";
 
 type AlertMsgProps = {
     message: string;
+    className?: string;
 };
 
-function AlertMsg({ message }: AlertMsgProps) {
+function AlertMsg({ message, className }: AlertMsgProps) {
     return (
         <Alert
             variant="destructive"
-            className="w-fit border-0 p-0 text-error-500"
+            className={`w-fit border-0 p-0 text-error-500 ${className}`}
         >
             <AlertCircleIcon />
             <AlertTitle>{message}</AlertTitle>

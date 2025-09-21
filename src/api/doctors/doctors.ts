@@ -4,7 +4,7 @@ import type { IDoctorDetails } from "@/types";
 import type { IAppointmentValues } from "@/types";
 
 // const TOKEN = import.meta.env.VITE_TOKEN_DOCTOR;
-const TOKEN = localStorage.getItem("token") ?? "";
+// const TOKEN = localStorage.getItem("token") ?? "";
 
 // GET DOCTORS DATA
 export const fetchDoctorsData = async (): Promise<IDoctorDetails[]> => {
@@ -15,8 +15,7 @@ export const fetchDoctorsData = async (): Promise<IDoctorDetails[]> => {
             headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",
-                Authorization:
-                    "Bearer 7|SWbACSDKrqnrOpdVEiPPpPMvi5BYToGBDb1UW1uC67c0cf5e",
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
         }
     );
@@ -36,7 +35,7 @@ export const getDoctorDetails = async (id: string) => {
             `${import.meta.env.VITE_BASE_URL}doctors/${id}`,
             {
                 headers: {
-                    Authorization: `Bearer ${TOKEN}`,
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
                     "Content-Type": "application/json",
                 },
             }
@@ -54,7 +53,7 @@ export const getDoctorReviews = async (link: string) => {
         const response = await axios.get(link, {
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${TOKEN}`,
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
         });
         return response.data;
@@ -78,7 +77,7 @@ export const addReview = async (reviewData: {
             { rating: reviewData.rating, comment: reviewData.comment },
             {
                 headers: {
-                    Authorization: `Bearer ${TOKEN}`,
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
                     "Content-Type": "application/json",
                 },
             }
@@ -98,7 +97,7 @@ export const getAvailableSlots = async (id: string) => {
             {
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${TOKEN}`,
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
             }
         );
@@ -118,7 +117,7 @@ export const createDoctorAppointment = async (data: IAppointmentValues) => {
             {
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${TOKEN}`,
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
             }
         );

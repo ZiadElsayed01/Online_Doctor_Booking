@@ -1,10 +1,5 @@
-import {
-    useLoaderData,
-    useNavigation,
-    useSearchParams,
-    type LoaderFunctionArgs,
-} from "react-router-dom";
-import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { isSameDay } from "date-fns";
 
 import { getUserAppointments } from "@/api/appointments/appointments";
@@ -19,22 +14,40 @@ import NoData from "@/components/common/NoData";
 function Appointments() {
     const [dates, setDates] = useState<Date[] | undefined>(undefined);
 
-    const { userAppointmentsRes } = useLoaderData();
-    const userAppointments = userAppointmentsRes.appointments;
+    const [userAppointments, setUserAppointments] = useState<IAppointment[]>(
+        []
+    );
+    const [isLoading, setIsLoading] = useState(false);
+
+    const [searchParams, setSearchParams] = useSearchParams();
+    const filterBy = searchParams.get("filter");
+
+    useEffect(() => {
+        async function fetchUserAppointments() {
+            try {
+                setIsLoading(true);
+                const res = await getUserAppointments(filterBy);
+                setUserAppointments(res.appointments);
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+        fetchUserAppointments();
+    }, []);
+
+    if (isLoading) return <Loader className="mt-40 mx-auto" size="xl" />;
+    if (!userAppointments || !userAppointments?.length) return <NoData />;
+
     const filterdAppointments =
-        dates && dates.length > 0
+        dates && dates.length > 0 && userAppointments
             ? userAppointments.filter((appointment: IAppointment) =>
                   dates?.some((date) =>
                       isSameDay(new Date(appointment.date), new Date(date))
                   )
               )
             : userAppointments;
-
-    const [searchParams, setSearchParams] = useSearchParams();
-    const filterBy = searchParams.get("filter");
-
-    const navigation = useNavigation();
-    const isLoading = navigation.state === "loading";
 
     return (
         <div className="relative">
@@ -51,9 +64,7 @@ function Appointments() {
             >
                 <AppointmentFilterTabs />
 
-                {isLoading ? (
-                    <Loader className="mt-40 mx-auto" size="xl" />
-                ) : filterdAppointments.length === 0 ? (
+                {filterdAppointments.length === 0 ? (
                     <NoData />
                 ) : (
                     <TabsContent
@@ -73,16 +84,6 @@ function Appointments() {
             </Tabs>
         </div>
     );
-}
-
-export async function loader({ request }: LoaderFunctionArgs) {
-    const token = localStorage.getItem("token");
-    if (!token) return;
-    const url = new URL(request.url);
-    const filterBy = url.searchParams.get("filter");
-    const userAppointmentsRes = await getUserAppointments(filterBy);
-
-    return { userAppointmentsRes };
 }
 
 export default Appointments;

@@ -30,8 +30,6 @@ import {
     MapSearch,
     ContactUs,
 } from "./pages/index";
-import { loader as doctorDetailsLoader } from "./pages/doctorDetails/DoctorDetails";
-import { loader as appointmentsLoader } from "./pages/appointments/Appointments";
 import { UserContextProvider } from "./context/user-context";
 
 export const router = createBrowserRouter([
@@ -85,12 +83,10 @@ export const router = createBrowserRouter([
             {
                 path: "/doctors/:doctorId",
                 element: <DoctorDetails />,
-                loader: doctorDetailsLoader,
             },
             {
                 path: "/appointments",
                 element: <Appointments />,
-                loader: appointmentsLoader,
             },
             {
                 path: "/profile",

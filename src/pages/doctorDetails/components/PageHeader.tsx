@@ -17,6 +17,7 @@ function PageHeader({ title, className, doctorId }: PageHeaderProps) {
     } = useFavourites();
 
     const isDoctorFavourite = favouritesIDs.includes(doctorId);
+    console.log(doctorId);
 
     return (
         <header
@@ -27,9 +28,9 @@ function PageHeader({ title, className, doctorId }: PageHeaderProps) {
             {isLikeLoading ? (
                 <Loader />
             ) : (
-                    <button
-                        type="button"
-                        title="Heart"
+                <button
+                    type="button"
+                    title="Heart"
                     className="hover:scale-110 transition-transform cursor-pointer"
                     onClick={() => toggleFavourite(doctorId)}
                 >

@@ -18,6 +18,7 @@ function Appointments() {
         []
     );
     const [isLoading, setIsLoading] = useState(false);
+    const [isDeletingAppointment, setIsDeletingAppointment] = useState(false);
 
     const [searchParams, setSearchParams] = useSearchParams();
     const filterBy = searchParams.get("filter");
@@ -35,7 +36,7 @@ function Appointments() {
             }
         }
         fetchUserAppointments();
-    }, []);
+    }, [isDeletingAppointment]);
 
     if (isLoading) return <Loader className="mt-40 mx-auto" size="xl" />;
     if (!userAppointments || !userAppointments?.length) return <NoData />;
@@ -69,13 +70,19 @@ function Appointments() {
                 ) : (
                     <TabsContent
                         value={filterBy || "all"}
-                        className="flex flex-wrap items-center gap-6 justify-center xl:justify-start"
+                        className="flex flex-wrap gap-6 justify-center xl:justify-start"
                     >
                         {filterdAppointments.map(
                             (appointment: IAppointment) => (
                                 <AppointmentCard
                                     appointment={appointment}
                                     key={appointment.id}
+                                    isDeletingAppointment={
+                                        isDeletingAppointment
+                                    }
+                                    setIsDeletingAppointment={
+                                        setIsDeletingAppointment
+                                    }
                                 />
                             )
                         )}

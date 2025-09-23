@@ -1,9 +1,9 @@
-import CardDoctor from "@/components/common/CardDoctor";
-import GoBackButton from "@/components/common/GoBackButton";
-import { Loader } from "@/components/common/Loader";
-import { useFavourites } from "@/hooks/useFavourite";
-import type { IDoctorDetails } from "@/types";
-import noFavourite from "@/assets/images/no-favorite.png";
+import CardDoctor from "../../components/common/CardDoctor";
+import GoBackButton from "../../components/common/GoBackButton";
+import { Loader } from "../../components/common/Loader";
+import { useFavourites } from "../../hooks/useFavourite";
+import type { IFavouriteDoctor } from "../../types";
+import noFavourite from "../../assets/images/no-favorite.png";
 
 export default function Favourite() {
     const { AllFavourites, toggleFavourite, loading } = useFavourites();
@@ -26,24 +26,16 @@ export default function Favourite() {
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 py-4 md:py-6 lg:py-10">
-                    {AllFavourites?.map(
-                        (favourite: {
-                            id: number;
-                            favouritable: { doctor_profile: IDoctorDetails };
-                        }) => (
-                            <CardDoctor
-                                key={favourite.id}
-                                doctor={favourite.favouritable.doctor_profile}
-                                onToggleFavourite={() =>
-                                    toggleFavourite(
-                                        favourite.favouritable.doctor_profile
-                                            .doctor_profile_id
-                                    )
-                                }
-                                isFavourite={true}
-                            />
-                        )
-                    )}
+                    {AllFavourites?.map((favourite: IFavouriteDoctor) => (
+                        <CardDoctor
+                            key={favourite.doctor_profile_id}
+                            doctor={favourite}
+                            onToggleFavourite={() =>
+                                toggleFavourite(favourite.doctor_profile_id)
+                            }
+                            isFavourite={true}
+                        />
+                    ))}
                 </div>
             )}
         </div>

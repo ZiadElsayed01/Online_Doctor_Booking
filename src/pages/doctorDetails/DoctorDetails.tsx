@@ -10,18 +10,20 @@ import { Loader } from "@/components/common/Loader";
 import PageHeader from "@/pages/doctorDetails/components/PageHeader";
 import Appointment from "./components/Appointment";
 import DoctorLocation from "./components/DoctorLocation";
-import type { IAppointmentSlot } from "@/types";
+import type { IAppointmentSlot, IDoctorDetails } from "@/types";
 import AlertMsg from "@/components/common/AlertMsg";
 
 function DoctorDetails() {
     const [availableSlots, setAvailableSlots] = useState<IAppointmentSlot[]>(
         []
     );
-    const [doctorDetails, setDoctorDetails] = useState<any | null>(null);
+    const [doctorDetails, setDoctorDetails] = useState<IDoctorDetails | null>(
+        null
+    );
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
     const { doctorId } = useParams();
-
+    console.log(doctorDetails);
     useEffect(() => {
         async function fetchDoctorData() {
             try {
@@ -61,7 +63,7 @@ function DoctorDetails() {
                 <PageHeader
                     title="Doctor Details"
                     className="lg:hidden"
-                    doctorId={doctorDetails.doctor_profile_id}
+                    doctorId={doctorDetails.user_id}
                 />
                 <div className="lg:col-span-2 lg:col-start-4 bg-secondary-100 rounded-xl px-2 sm:px-8 py-8">
                     <DoctorHeader
@@ -85,7 +87,7 @@ function DoctorDetails() {
                     <PageHeader
                         title="Make an appointment"
                         className="hidden lg:flex mb-8"
-                        doctorId={doctorDetails.doctor_profile_id}
+                        doctorId={doctorDetails.user_id}
                     />
                     <h2 className="font-medium text-lg mb-4 lg:hidden">
                         Make an appointment
@@ -101,7 +103,7 @@ function DoctorDetails() {
                     <DoctorReviews
                         reviewsCount={doctorDetails.reviews_count}
                         rating={doctorDetails.average_rating}
-                        doctorId={doctorDetails.doctor_profile_id}
+                        doctorId={doctorDetails.user_id}
                     />
                     {/* END DOCTOR REVIEWS SECTION */}
                 </div>

@@ -25,45 +25,48 @@ export type IDoctorDetails = {
   specialty_description: string;
   hospital_id: number;
   hospital_name: string;
+  hospital_city: string;
   hospital_start_time: string;
   hospital_end_time: string;
-  availability_id: number;
-  day: string;
-  start_time: string;
-  end_time: string;
   average_rating: number;
+  reviews_count: number;
   address?: string;
   lat?: number;
   lng?: number;
+  availability: {
+    availability_id: number;
+    day: string;
+    start_time: string;
+    end_time: string;
+  }[];
 };
 
 
 export type IFavouriteDoctor = {
-    id: number;
+    doctor_profile_id: number;
+    about: string;
+    experience_years: number;
+    price_per_hour: string;
     user_id: number;
-    favouritable_type: string;
-    favouritable_id: number;
-    created_at: Date;
-    updated_at: Date;
-    favouritable: {
-        id: number;
-        name: string;
-        email: string;
-        phone: string;
-        doctor_profile: {
-            id: number;
-            user_id: number;
-            specialist_id: number;
-            hospital_id: number;
-            about: string;
-            experience_years: number;
-            price_per_hour: string;
-            created_at: Date;
-            updated_at: Date;
-        };
-    };
+    name: string;
+    email: string;
+    phone: string;
+    specialty_id: number;
+    specialty_name_en: string;
+    specialty_name_ar: string;
+    specialty_description: string;
+    hospital_id: number;
+    hospital_name: string;
+    hospital_city: string;
+    hospital_start_time: string;
+    hospital_end_time: string;
+    availability_id: number;
+    day: string;
+    start_time: string;
+    end_time: string;
+    average_rating: string;
+    reviews_count: number;
 };
-
 
 export type ISpecialist = {
     id: number;

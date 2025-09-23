@@ -1,7 +1,6 @@
 import axios from "axios";
 
 import type { IDoctorDetails } from "@/types";
-import type { IAppointmentValues } from "@/types";
 
 // const TOKEN = import.meta.env.VITE_TOKEN_DOCTOR;
 // const TOKEN = localStorage.getItem("token") ?? "";
@@ -94,26 +93,6 @@ export const getAvailableSlots = async (id: string) => {
     try {
         const response = await axios.get(
             `${import.meta.env.VITE_BASE_URL}doctors/${id}/available-slots`,
-            {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
-            }
-        );
-        return response.data;
-    } catch (error) {
-        console.error(error);
-        throw error;
-    }
-};
-
-// POST DOCTOR APPOINTMENT
-export const createDoctorAppointment = async (data: IAppointmentValues) => {
-    try {
-        const response = await axios.post(
-            `${import.meta.env.VITE_BASE_URL}appointments`,
-            data,
             {
                 headers: {
                     "Content-Type": "application/json",

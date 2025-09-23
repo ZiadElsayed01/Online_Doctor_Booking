@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import { useNavigate } from "react-router-dom";
 import { formatDate } from "date-fns";
 
@@ -17,12 +17,21 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
+import { cancelAppointment } from "@/api/appointments/appointments";
+import toast from "react-hot-toast";
+import CancelConfirmation from "./CancelConfirmation";
 
 type AppointmentCardProps = {
     appointment: IAppointment;
+    isDeletingAppointment: boolean;
+    setIsDeletingAppointment: Dispatch<SetStateAction<boolean>>;
 };
 
-function AppointmentCard({ appointment }: AppointmentCardProps) {
+function AppointmentCard({
+    appointment,
+    isDeletingAppointment,
+    setIsDeletingAppointment,
+}: AppointmentCardProps) {
     const { date, time, doctor, status } = appointment;
     const [speciality, setSpeciality] = useState<ISpeciality | null>(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -43,6 +52,19 @@ function AppointmentCard({ appointment }: AppointmentCardProps) {
 
         fetchSpeciality();
     }, []);
+
+    async function handleCancelAppointment() {
+        try {
+            setIsDeletingAppointment(true);
+            const res = await cancelAppointment(appointment.id);
+            toast.success(res.message);
+        } catch (error) {
+            console.error(error);
+            toast.error("Something went wrong. Cannot cancel appointment.");
+        } finally {
+            setIsDeletingAppointment(false);
+        }
+    }
 
     return (
         <Card className="w-full max-w-sm gap-2">
@@ -93,15 +115,44 @@ function AppointmentCard({ appointment }: AppointmentCardProps) {
             </CardContent>
 
             <CardFooter className="flex items-center gap-4 mt-2">
-                <Button variant="outline" className="flex-1">
-                    Cancel
-                </Button>
-                <Button
-                    className="flex-1"
-                    onClick={() => navigate(`/doctors/${doctor.id}`)}
-                >
-                    Reschedule
-                </Button>
+                {status === "upcoming" || status === "pending" ? (
+                    <>
+                        <CancelConfirmation
+                            onCancelAppointment={handleCancelAppointment}
+                            isDeletingAppointment={isDeletingAppointment}
+                        >
+                            <Button variant="outline" className="flex-1">
+                                Cancel
+                            </Button>
+                        </CancelConfirmation>
+                        <Button
+                            className="flex-1"
+                            onClick={() => navigate(`/doctors/${doctor.id}`)}
+                        >
+                            Reschedule
+                        </Button>
+                    </>
+                ) : status === "completed" ? (
+                    <>
+                        <Button
+                            variant="outline"
+                            className="flex-1"
+                            onClick={() => navigate(`/doctors/${doctor.id}`)}
+                        >
+                            Book again
+                        </Button>
+                        <Button
+                            className="flex-1"
+                            onClick={() =>
+                                navigate(`/doctors/${doctor.id}/review`)
+                            }
+                        >
+                            Feedback
+                        </Button>
+                    </>
+                ) : (
+                    <></>
+                )}
             </CardFooter>
         </Card>
     );

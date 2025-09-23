@@ -29,6 +29,7 @@ import {
     NotFound,
     MapSearch,
     ContactUs,
+    Error,
 } from "./pages/index";
 import { UserContextProvider } from "./context/user-context";
 
@@ -71,6 +72,7 @@ export const router = createBrowserRouter([
                 </ProtectedRoute>
             </UserContextProvider>
         ),
+        errorElement: <Error />,
         children: [
             {
                 path: "/",

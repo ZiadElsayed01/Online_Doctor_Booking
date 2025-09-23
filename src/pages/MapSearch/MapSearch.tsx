@@ -34,9 +34,12 @@ const MapSearch = () => {
       !mapRef.current
     ) {
       const setupMap = async () => {
-        const map = await initializeMap(doctors, (doctorWithCoords: any) => {
-          setSelectedDoctor(doctorWithCoords);
-        });
+        const map = await initializeMap(
+          doctors,
+          (doctorWithCoords: IDoctorDetails) => {
+            setSelectedDoctor(doctorWithCoords);
+          }
+        );
         mapRef.current = map;
       };
 
@@ -77,7 +80,7 @@ const MapSearch = () => {
               <MapDoctorCard
                 key={doctor.user_id}
                 doctor={doctor}
-                isSelected={selectedDoctor?.user_id === doctor.user_id}
+                isSelected={selectedDoctor?.user_id == doctor.user_id}
                 onSelect={handleSelectDoctor}
               />
             ))}

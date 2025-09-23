@@ -23,6 +23,6 @@ export { default as PaymentMethodPage } from "./profile/PaymentMethodPage";
 export { default as PaymentListPage } from "./profile/PaymentListPage";
 export { default as AddNewCardPage } from "./profile/AddNewCardPage";
 export { default as NotFound } from "./NotFound";
+export { default as Error } from "./Error";
 export { default as MapSearch } from "./MapSearch/MapSearch";
 export { default as ContactUs } from "./ContactUs/ContactUs";
-

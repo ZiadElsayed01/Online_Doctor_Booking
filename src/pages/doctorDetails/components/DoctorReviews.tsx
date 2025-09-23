@@ -11,7 +11,7 @@ import { Loader } from "@/components/common/Loader";
 import AlertMsg from "@/components/common/AlertMsg";
 
 type DoctorReviewsProps = {
-    doctorId: string;
+    doctorId: number;
     reviewsCount: number;
     rating: string;
 };
